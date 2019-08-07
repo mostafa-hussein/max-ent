@@ -1,0 +1,14 @@
+1 turn on oven  
+2 turn off oven 
+3 add tea bag
+4 add sugar
+5 add milk
+6 stir
+7 add water 
+
+
+trun off oven after turn on oven 
+
+turn off oven before add water 
+
+add tea bag before stir
