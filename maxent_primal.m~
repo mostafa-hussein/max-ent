@@ -166,12 +166,12 @@ cvx_begin
                 end
                 sum2=sum2+pts(x)*tmp2;
             end
-%             if (i ~= 4 || i ~=  5 )
-%                 sum1==sum2; 
-%             else
+            if (i ~= 4 || 5 )
+                sum1==sum2; 
+            else
                 sum1- sum2 - 0.1 <=0;   % uper limit 
                 sum2- sum1 - 0.1 <=0;   % lower limit 
-%             end
+            end
             
         end
         

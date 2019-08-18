@@ -111,13 +111,11 @@ for i=0:no_states-1
       f(5,i+1,5)=1;
     end    
     
-   
     if (tmp(3)==1  && tmp(6)==0 && tmp(4)==1  || tmp(3)==1  && tmp(6)==0 && tmp(5)==1 )
       f(6,i+1,6)=1;
-    end    
+    end
     
-    
-    %     f(6,96,6)=1;
+%     f(6,96,6)=1;
      
     if ( tmp(1)==1 &&  tmp(2)==1 && tmp(3)==1 &&  tmp(6)==0 &&  tmp(7)==0  )
        f(7,i+1,7)=1;
@@ -166,11 +164,11 @@ cvx_begin
                 end
                 sum2=sum2+pts(x)*tmp2;
             end
-%             if (i ~= 4 || i ~=  5 )
+%             if (i ~= 4 || i ~= 5)
 %                 sum1==sum2; 
 %             else
-                sum1- sum2 - 0.1 <=0;   % uper limit 
-                sum2- sum1 - 0.1 <=0;   % lower limit 
+                sum1- sum2 - 0.0 <=0;   % uper limit 
+                sum2- sum1 - 0.0 <=0;   % lower limit 
 %             end
             
         end
