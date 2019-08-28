@@ -1,8 +1,8 @@
 %% Data processing
 clear;
 count=1;
-data1=load('data7.txt');
-data2=load('data6.txt');
+data1=load('data6.txt');
+data2=load('data7.txt');
 pair1=zeros(size(data1,1)*size(data1,2),2);
 
 for n=1:1 * size(data1,1)
@@ -40,7 +40,7 @@ for n=1:1 * size(data2,1)
     end
 end
 pair =[pair1; pair2];
-pair=pair2;
+pair=pair1;
 %disp(pair);
 
 %% Empirical model calculations
@@ -169,8 +169,8 @@ cvx_begin
 %             if (i ~= 4 || i ~=  5 )
 %                 sum1==sum2; 
 %             else
-                sum1- sum2 - 0.1 <=0;   % uper limit 
-                sum2- sum1 - 0.1 <=0;   % lower limit 
+                sum1- sum2 - 0.0 <=0;   % uper limit 
+                sum2- sum1 - 0.0 <=0;   % lower limit 
 %             end
             
         end
@@ -218,9 +218,9 @@ for i=1:no_features
     FE2(1,i)=s2;
 end
 
-% disp (FE1);
-% 
-% disp (FE2);
+disp (FE1);
+
+disp (FE2);
 
 %% entropy calculation 
 
@@ -235,7 +235,7 @@ end
        end
        s1=s1+pts(x)*s2;
     end
-% disp (-s1);
+disp (-s1);
 
 %% 
 evaluate;

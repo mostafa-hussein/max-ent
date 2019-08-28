@@ -2,8 +2,8 @@
 % clc;
 
 count=1;
-data1=load('data7.txt');
-data2=load('data6.txt');
+data1=load('data6.txt');
+data2=load('data7.txt');
 pair1=zeros(size(data1,1)*size(data1,2),2);
 
 for n=1:1 * size(data1,1)
@@ -40,7 +40,7 @@ for n=1:1 * size(data2,1)
     end
 end
 pair =[pair1; pair2];
-pair=pair2;
+pair=pair;
 %disp(pair);
 
 

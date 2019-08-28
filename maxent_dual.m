@@ -1,26 +1,46 @@
 %% Data processing
 clear;
 count=1;
-data=load('data7.txt');
-pair=zeros(size(data,1)*size(data,2),2);
+data1=load('data6.txt');
+data2=load('data7.txt');
+pair1=zeros(size(data1,1)*size(data1,2),2);
 
-for n=1:1 * size(data,1)
-    seq=data(n,:);
+for n=1:1 * size(data1,1)
+    seq=data1(n,:);
     state=[0 0 0 0 0 0 0];
-    for i=1:size(data,2)
+    for i=1:size(data1,2)
         action = seq(i);
         %sprintf('( %d , %d )', bi2de(state) ,action )
 
-        pair(count,1)=bi2de(state)+1 ;
+        pair1(count,1)=bi2de(state)+1 ;
 
-        pair(count,2)=action ;
+        pair1(count,2)=action ;
 
         count =count+1;
         state(1,action)=1; 
     end
-
 end
 
+count=1;
+pair2=zeros(size(data2,1)*size(data2,2),2);
+
+for n=1:1 * size(data2,1)
+    seq=data2(n,:);
+    state=[0 0 0 0 0 0 0];
+    for i=1:size(data2,2)
+        action = seq(i);
+        %sprintf('( %d , %d )', bi2de(state) ,action )
+
+        pair2(count,1)=bi2de(state)+1 ;
+
+        pair2(count,2)=action ;
+
+        count =count+1;
+        state(1,action)=1; 
+    end
+end
+pair =[pair1; pair2];
+pair=pair;
 %disp(pair);
 
 %% Empirical model calculations
@@ -29,7 +49,7 @@ end
 no_states=128;
 no_actions=7;
 no_features=7;
-l=size(data,1)* size(data,2);
+l=size(pair,1);
 cx=zeros(no_states,1);
 cxy=zeros(no_states,no_actions);
 
@@ -92,14 +112,18 @@ for i=0:no_states-1
     end    
     
    
-    f(6,96,6)=1;
+    if (tmp(3)==1  && tmp(6)==0 && tmp(4)==1  || tmp(3)==1  && tmp(6)==0 && tmp(5)==1 )
+      f(6,i+1,6)=1;
+    end    
+    
+    
+    %     f(6,96,6)=1;
      
     if ( tmp(1)==1 &&  tmp(2)==1 && tmp(3)==1 &&  tmp(6)==0 &&  tmp(7)==0  )
        f(7,i+1,7)=1;
     end
    
 end
-
 %% optimization section 
 
 % clc;
@@ -170,7 +194,7 @@ for x=1:no_states
     
 end
 
-disp(pos);
+% disp(pos);
     
 
 %% calculate the feature expected for empirical distribution 
