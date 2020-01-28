@@ -1,7 +1,8 @@
 %% Data processing
 clear;
+%clc;
 count=1;
-data1=load('data6.txt');
+data1=load('data1.txt');
 data2=load('data7.txt');
 pair1=zeros(size(data1,1)*size(data1,2),2);
 
@@ -166,11 +167,13 @@ cvx_begin
                 end
                 sum2=sum2+pts(x)*tmp2;
             end
+            sum1==sum2
+            
 %             if (i ~= 4 || i ~=  5 )
 %                 sum1==sum2; 
 %             else
-                sum1- sum2 - 0.0 <=0;   % uper limit 
-                sum2- sum1 - 0.0 <=0;   % lower limit 
+%                 sum1- sum2 - 0.0 <=0;   % uper limit 
+%                 sum2- sum1 - 0.0 <=0;   % lower limit 
 %             end
             
         end
@@ -238,4 +241,4 @@ disp (FE2);
 disp (-s1);
 
 %% 
-evaluate;
+evaluate(data2,data1,pas,no_actions);

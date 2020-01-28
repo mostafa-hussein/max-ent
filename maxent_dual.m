@@ -1,7 +1,8 @@
 %% Data processing
 clear;
+%clc;
 count=1;
-data1=load('data6.txt');
+data1=load('data1.txt');
 data2=load('data7.txt');
 pair1=zeros(size(data1,1)*size(data1,2),2);
 
@@ -40,7 +41,7 @@ for n=1:1 * size(data2,1)
     end
 end
 pair =[pair1; pair2];
-pair=pair;
+pair=pair1;
 %disp(pair);
 
 %% Empirical model calculations
@@ -112,7 +113,7 @@ for i=0:no_states-1
     end    
     
    
-    if (tmp(3)==1  && tmp(6)==0 && tmp(4)==1  || tmp(3)==1  && tmp(6)==0 && tmp(5)==1 )
+    if (tmp(3)==1  && tmp(6)==0 && tmp(4)==1  || tmp(3)==1  && tmp(6)==0 && tmp(5)==1  || tmp(3)==1  && tmp(6)==0 )
       f(6,i+1,6)=1;
     end    
     
@@ -161,8 +162,9 @@ cvx_end
 
 disp(lamda)
 
+lamda=normalize(lamda,'range',[0,1]);
 
-lamda=lamda/100000;
+%lamda=lamda/100000;
 
 disp(lamda);
 
@@ -247,4 +249,4 @@ disp (FE2);
 disp (-s1);
 
 %% 
-evaluate;
+evaluate(data2,data1,pas,no_actions);
