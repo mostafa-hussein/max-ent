@@ -2,8 +2,8 @@
 clear;
 %clc;
 count=1;
-data1=load('data1.txt');
-data2=load('data7.txt');
+data1=load('train_1.txt');
+data2=load('fake.txt');
 pair1=zeros(size(data1,1)*size(data1,2),2);
 
 for n=1:1 * size(data1,1)
@@ -238,7 +238,7 @@ disp (FE2);
        end
        s1=s1+pts(x)*s2;
     end
-disp (-s1);
+disp ("entropy = "+ -s1);
 
 %% 
 evaluate(data2,data1,pas,no_actions);

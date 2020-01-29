@@ -3,8 +3,8 @@
 function []= evaluate(data1,data2,pas,no_actions)
 
 count=1;
-% data1=load('data7.txt');
-% data2=load('data7.txt');
+data1=load('test.txt');
+data2=load('test.txt');
 pair1=zeros(size(data1,1)*size(data1,2),2);
 
 for n=1:1 * size(data1,1)
@@ -12,12 +12,8 @@ for n=1:1 * size(data1,1)
     state=[0 0 0 0 0 0 0];
     for i=1:size(data1,2)
         action = seq(i);
-        %sprintf('( %d , %d )', bi2de(state) ,action )
-
         pair1(count,1)=bi2de(state)+1 ;
-
         pair1(count,2)=action ;
-
         count =count+1;
         state(1,action)=1; 
     end
@@ -30,12 +26,8 @@ for n=1:1 * size(data2,1)
     state=[0 0 0 0 0 0 0];
     for i=1:size(data2,2)
         action = seq(i);
-        %sprintf('( %d , %d )', bi2de(state) ,action )
-
         pair2(count,1)=bi2de(state)+1 ;
-
         pair2(count,2)=action ;
-
         count =count+1;
         state(1,action)=1; 
     end
@@ -43,7 +35,6 @@ end
 pair =[pair1; pair2];
 pair=pair1;
 %disp(pair);
-
 
 %%  system evaluation 
 
