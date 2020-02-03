@@ -2,7 +2,7 @@
 clear;
 %clc;
 count=1;
-data1=load('train_1.txt');
+augdata1=load('train_1.txt');
 data2=load('fake.txt');
 pair1=zeros(size(data1,1)*size(data1,2),2);
 
