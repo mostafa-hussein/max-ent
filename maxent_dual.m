@@ -153,9 +153,9 @@ cvx_end
 
 disp(lamda)
 
-%lamda=normalize(lamda,'range',[0,1]);
+lamda=normalize(lamda,'range',[0,1]);
 
-lamda=lamda/100000;
+%lamda=lamda/100000;
 
 disp(lamda);
 

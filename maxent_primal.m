@@ -51,7 +51,7 @@ pair=pair1;
 
 no_states=128;
 no_actions=7;
-no_features=7;
+no_features=8;
 l=0;
 for q=1:size(pair,1)
     l=l+pair(q,3)*1;
@@ -94,6 +94,10 @@ for i=0:no_states-1
    
     if ( tmp(1)==1 &&  tmp(2)==0 &&  tmp(6)==0 &&  tmp(7)==0  )
       f(2,i+1,2)=1;
+    end
+    
+    if ( tmp(1)==1  && tmp(6)==1 )
+      f(8,i+1,2)=1;
     end
     
    if ( tmp(1)==1 &&  tmp(3)==0 &&  tmp(6)==0 &&  tmp(7)==0  )
@@ -173,14 +177,10 @@ cvx_begin
                 end
                 sum2=sum2+pts(x)*tmp2;
             end
-            sum1==sum2
+           sum1==sum2
             
-%             if (i ~= 4 || i ~=  5 )
-%                 sum1==sum2; 
-%             else
-%                 sum1- sum2 - 0.0 <=0;   % uper limit 
-%                 sum2- sum1 - 0.0 <=0;   % lower limit 
-%             end
+%             sum1- sum2 - 0.0 <=0.08;   % uper limit 
+%             sum2- sum1 - 0.0 <=0.08;   % lower limit 
             
         end
         
