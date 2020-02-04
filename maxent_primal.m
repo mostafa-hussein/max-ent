@@ -2,20 +2,22 @@
 clear;
 %clc;
 count=1;
-augdata1=load('train_1.txt');
+data1=load('train_1.txt');
 data2=load('fake.txt');
-pair1=zeros(size(data1,1)*size(data1,2),2);
+pair1=zeros(size(data1,1)*(size(data1,2)-1),2);
 
 for n=1:1 * size(data1,1)
     seq=data1(n,:);
     state=[0 0 0 0 0 0 0];
-    for i=1:size(data1,2)
+    for i=2:size(data1,2)
         action = seq(i);
         %sprintf('( %d , %d )', bi2de(state) ,action )
 
         pair1(count,1)=bi2de(state)+1 ;
 
         pair1(count,2)=action ;
+        
+        pair1(count,3)=seq(1) ;
 
         count =count+1;
         state(1,action)=1; 
@@ -40,7 +42,7 @@ for n=1:1 * size(data2,1)
         state(1,action)=1; 
     end
 end
-pair =[pair1; pair2];
+%pair =[pair1; pair2];
 pair=pair1;
 %disp(pair);
 
@@ -50,16 +52,20 @@ pair=pair1;
 no_states=128;
 no_actions=7;
 no_features=7;
-l=size(pair,1);
+l=0;
+for q=1:size(pair,1)
+    l=l+pair(q,3)*1;
+end
 cx=zeros(no_states,1);
 cxy=zeros(no_states,no_actions);
 
 for i=1:l
-   cx(pair(i,1)) =cx(pair(i,1))+1;
+   cx(pair(i,1)) =cx(pair(i,1))+1* pair(i,3);
    
-   cxy(pair(i,1),pair(i,2))=cxy(pair(i,1),pair(i,2))+1;
+   cxy(pair(i,1),pair(i,2))=cxy(pair(i,1),pair(i,2))+1*pair(i,3);
    
 end
+
 
 pts= cx/l;
 ptsa=cxy./l;
