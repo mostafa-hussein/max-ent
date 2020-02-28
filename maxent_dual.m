@@ -72,50 +72,36 @@ end
 
 f=zeros(no_features,no_states,no_actions);
 
-
 for i=0:no_states-1
     tmp=de2bi(i,7);
     
-    f(1,1,1)=1;
+    if ( tmp(2)==0 &&  tmp(3)==0 &&  tmp(4)==0 &&  tmp(5)==0 &&  tmp(6)==0 &&  tmp(7)==0 )
+      f(1,i+1,1)=1;
+    end
    
-    if ( tmp(1)==1 &&  tmp(2)==0 &&  tmp(6)==0 &&  tmp(7)==0  )
+    if ( tmp(1)==1 &&  tmp(3)==1 &&  tmp(4)==0 &&  tmp(5)==0 &&  tmp(6)==0 &&  tmp(7)==0 )
       f(2,i+1,2)=1;
     end
     
-   if ( tmp(1)==1 &&  tmp(3)==0 &&  tmp(6)==0 &&  tmp(7)==0  )
-       f(3,i+1,3)=1;
+    if ( tmp(1)==1 &&  tmp(2)==0 &&  tmp(4)==0 &&  tmp(5)==0 &&  tmp(6)==0 &&  tmp(7)==0 )
+      f(3,i+1,3)=1;
     end
     
-%    if ( tmp(1)==1  && tmp(3)==1 &&  tmp(4)==0 &&  tmp(6)==0 &&  tmp(7)==0  )
-%       f(4,i+1,4)=1;
-%     end
-%    
-% 
-%     if ( tmp(1)==1  && tmp(3)==1 &&  tmp(5)==0 &&  tmp(6)==0 &&  tmp(7)==0  )
-%       f(5,i+1,5)=1;
-%     end
-
-   if ( tmp(1)==1  && tmp(6)==0 && tmp(4) ==0  )
+    if ( tmp(1)==1 &&  tmp(3)==1 &&  tmp(2)==1 &&  tmp(7)==1 &&  tmp(6)==0 &&  tmp(4)==0 )
       f(4,i+1,4)=1;
     end
-   
-
-    if (tmp(1)==1  && tmp(6)==0 && tmp(5)==0  )
+    
+    if ( tmp(1)==1 &&  tmp(3)==1 &&  tmp(2)==1 &&  tmp(7)==1 &&  tmp(6)==0 &&  tmp(5)==0 )
       f(5,i+1,5)=1;
-    end    
-    
-   
-    if (tmp(3)==1  && tmp(6)==0 && tmp(4)==1  || tmp(3)==1  && tmp(6)==0 && tmp(5)==1  || tmp(3)==1  && tmp(6)==0 )
+    end
+
+    if ( tmp(1)==1 &&  tmp(2)==1 &&  tmp(3)==1 &&  tmp(4)==1 &&  tmp(5)==1 &&  tmp(7)==1 )
       f(6,i+1,6)=1;
-    end    
-    
-    
-    %     f(6,96,6)=1;
-     
-    if ( tmp(1)==1 &&  tmp(2)==1 && tmp(3)==1 &&  tmp(6)==0 &&  tmp(7)==0  )
-       f(7,i+1,7)=1;
     end
    
+    if ( tmp(1)==1 &&  tmp(2)==1 &&  tmp(3)==1 &&  tmp(5)==0 &&  tmp(6)==0 &&  tmp(4)==0 )
+      f(7,i+1,7)=1;
+    end    
 end
 %% optimization section 
 
@@ -123,17 +109,18 @@ cvx_begin
     variable lamda(no_features)
     
     s1=0;   
-    for x=1:no_states
+    for i=1:no_features
         sum2=0;
-       for y=1:no_actions
+        for x=1:no_states
            sum3=0;
-          for i=1:no_features
-            sum3=sum3 +  lamda(i)* f(i,x,y);
-          end 
-          sum2 = sum2 + ptas(x,y)* sum3;
-       end
-       s1=s1+pts(x)*sum2;
+           for y=1:no_actions
+              sum3 = sum3 + ptsa(x,y)* f(i,x,y);
+           end
+           sum2=sum2+sum3;
+        end
+        s1=s1+lamda(i)*sum2;
     end
+    
     
     sum1=0;
     for x=1:no_states
@@ -145,19 +132,20 @@ cvx_begin
           end 
           sum2 = sum2 + exp( sum3) ;
        end
-       sum1=sum1+pts(x)* log (sum2);
+       sum1=sum1+pts(x)* log(sum2);
     end
    
     maximize( s1-sum1 )
+    subject to
+        for i=1:no_features
+           lamda(i) <= 50;
+           lamda(i) >= 0;
+        end
+    
+    
 cvx_end
 
 disp(lamda)
-
-lamda=normalize(lamda,'range',[0,1]);
-
-%lamda=lamda/100000;
-
-disp(lamda);
 
 %% calculate the Model 
 
