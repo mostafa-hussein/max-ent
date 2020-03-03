@@ -3,9 +3,7 @@ clear;
 %clc;
 count=1;
 data=load('train_1.txt');
-
 %w=data(:,1);
-
 data=data(:,2:end);
 
 pair=zeros(size(data,2),2,size(data,1));
@@ -90,19 +88,11 @@ end
 
 cvx_begin
     variable lamda(no_features) nonnegative
-    variable X nonnegative
-    variable Y(no_dem) nonnegative
-    %variable w(no_dem)
+    variable w(no_dem) nonnegative
+    variable z
     
-    term = -no_dem *X - sum(Y); 
-    
-    maximize( term )
+    maximize( z )
     subject to
-    
-        for i=1:no_features
-           lamda(i) <= 1000;
-        end
-        
         c=0;
         for d=1:no_dem
             a=0;
@@ -130,21 +120,26 @@ cvx_begin
                end
                a=a+epst(x,d)* log(sum2);
             end
-            c=(b-a);
-            
-            -1*X -Y(d) <= c/no_dem;
-        end   
+
+            c=c+(b-a)*w(d);
+        end
+        c=c/sum(w);
+        
+        z<= c;
+        sum(w)<=no_dem;
+        for j=1:no_dem
+           w(d)<=1; 
+        end
+        
+        for i=1:no_features
+           lamda(i) <= 50;
+        end
     
 cvx_end
 
-
 disp(lamda)
 
-lamda=lamda./100;
-w=1-Y;
-
 disp(w)
-
 
 %% calculate the Model 
 
