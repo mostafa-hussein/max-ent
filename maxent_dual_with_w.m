@@ -88,7 +88,6 @@ end
 
 cvx_begin
     variable lamda(no_features) nonnegative
-    %variable w(no_dem)
     
     c=0;
     for d=1:no_dem
@@ -163,7 +162,6 @@ for x=1:no_states
     
 end
 
-% disp(pos);
     
 
 %% calculate the feature expected for empirical distribution 
@@ -244,63 +242,3 @@ disp ("entropy = "+-s1);
 
 %% 
 evaluate(data,data,pas,no_actions);
-
-
-%%
-
-% 
-% cvx_begin
-%     variable lamda(no_features)
-%     %variable w(no_dem)
-%     
-%     s0=0;
-%     for d=1:no_dem
-%         s1=0;
-%         for i=1:no_features
-%             sum2=0;
-%             for x=1:no_states
-%                sum3=0;
-%                for y=1:no_actions
-%                   sum3 = sum3 + epsat(x,y,d)* f(i,x,y);
-%                end
-%                sum2=sum2+sum3;
-%             end
-%             s1=s1+lamda(i)*sum2;
-%         end
-%         s0=s0+s1*w(d);
-%     end
-%     s0=s0/sum(w);
-%     
-%     sum0=0;
-%     for d=1:no_dem
-%         sum1=0;
-%         for x=1:no_states
-%             sum2=0;
-%            for y=1:no_actions
-%                sum3=0;
-%               for i=1:no_features
-%                 sum3=sum3 +  lamda(i)* f(i,x,y);
-%               end 
-%               sum2 = sum2 + exp( sum3) ;
-%            end
-%            sum1=sum1+epst(x,d)* log(sum2);
-%         end
-%         sum0=sum0 + sum1*w(d);
-%     end
-%     sum0=sum0/sum(w);
-%     
-%     
-%     maximize( s0-sum0 )
-%     subject to
-%         for i=1:no_features
-%            lamda(i) <= 50;
-%            lamda(i) >= 0;
-%         end
-%     
-% cvx_end
-% 
-% disp(lamda)
-% 
-% disp(w)
-
-

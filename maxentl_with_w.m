@@ -92,9 +92,8 @@ cvx_begin
     variable lamda(no_features) nonnegative
     variable X nonnegative
     variable Y(no_dem) nonnegative
-    %variable w(no_dem)
     
-    term = -no_dem *X - sum(Y); 
+    term = +2 *X - sum(Y); 
     
     maximize( term )
     subject to
@@ -103,6 +102,10 @@ cvx_begin
            lamda(i) <= 1000;
         end
         
+        %Y(1)==0.001;
+        %Y(2)==0.001;
+        %Y(3)>=0;
+        %X>=0
         c=0;
         for d=1:no_dem
             a=0;
@@ -132,16 +135,18 @@ cvx_begin
             end
             c=(b-a);
             
-            -1*X -Y(d) <= c/no_dem;
+            1*X -Y(d) <= c/no_dem;
         end   
     
 cvx_end
 
 
-disp(lamda)
+
 
 lamda=lamda./100;
 w=1-Y;
+
+disp(lamda)
 
 disp(w)
 
