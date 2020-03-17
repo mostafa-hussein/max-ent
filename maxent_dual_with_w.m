@@ -3,7 +3,7 @@ clear;
 %clc;
 count=1;
 data=load('train_1.txt');
-w=data(:,1);
+%w=data(:,1);
 data=data(:,2:end);
 
 pair=zeros(size(data,2),2,size(data,1));
@@ -85,9 +85,11 @@ for i=0:no_states-1
     end    
 end
 %% optimization section 
+M=2;
 
 cvx_begin
     variable lamda(no_features) nonnegative
+    variable w(no_dem) nonnegative
     
     c=0;
     for d=1:no_dem
@@ -117,17 +119,23 @@ cvx_begin
            a=a+epst(x,d)* log(sum2);
         end
         
-        c=c+(b-a)*w(d);
+ois        c=c+(b-a)*w(d);
     end
-    c=c/sum(w);
+    c=c; %/sum(w);
  
     maximize( c )
+    
     subject to
     
         for i=1:no_features
-           lamda(i) <= 50;
+           %lamda(i) <= 50;
         end
-    
+        
+        for d=1 : no_dem
+            w(d)<=0;
+            w(d)>=0;
+        end
+        
 cvx_end
 
 disp(lamda)

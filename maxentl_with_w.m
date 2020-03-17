@@ -87,25 +87,21 @@ for i=0:no_states-1
     end    
 end
 %% optimization section 
-
+M=2;
 cvx_begin
     variable lamda(no_features) nonnegative
     variable X nonnegative
     variable Y(no_dem) nonnegative
     
-    term = +2 *X - sum(Y); 
+    term = +M *X - sum(Y); 
     
     maximize( term )
     subject to
     
         for i=1:no_features
-           lamda(i) <= 1000;
+           %lamda(i) <= 1000;
         end
         
-        %Y(1)==0.001;
-        %Y(2)==0.001;
-        %Y(3)>=0;
-        %X>=0
         c=0;
         for d=1:no_dem
             a=0;
@@ -135,21 +131,70 @@ cvx_begin
             end
             c=(b-a);
             
-            1*X -Y(d) <= c/no_dem;
+            1*X -Y(d) <= c;
         end   
     
 cvx_end
 
-
-
-
-lamda=lamda./100;
-w=1-Y;
-
+lamda=lamda./10000;
 disp(lamda)
+disp(Y)
+disp(X)
 
-disp(w)
+%% optimization section 
+M=2;
 
+cvx_begin
+    variable w(no_dem) nonnegative
+    
+    c=0;
+    su=0;
+    for d=1:no_dem
+        a=0;
+        b=0;
+        for i=1:no_features
+            sum2=0;
+            for x=1:no_states
+               sum3=0;
+               for y=1:no_actions
+                  sum3 = sum3 + epsat(x,y,d)* f(i,x,y);
+               end
+               sum2=sum2+sum3;
+            end
+            b=b+lamda(i)*sum2;
+        end
+        
+        for x=1:no_states
+            sum2=0;
+           for y=1:no_actions
+               sum3=0;
+              for i=1:no_features
+                sum3=sum3 +  lamda(i)* f(i,x,y);
+              end 
+              sum2 = sum2 + exp( sum3) ;
+           end
+           a=a+epst(x,d)* log(sum2);
+        end
+        
+        c=c+(b-a)*w(d);
+        su=su+w(d);
+    end
+ 
+    minimize( c )
+    
+    subject to
+    
+        su=0;
+        for i=1:no_dem
+           w(i) <= 1;
+           w(i) >= 0;
+           su=su+w(i);
+        end
+        
+        su>=M;
+cvx_end
+
+disp(w);
 
 %% calculate the Model 
 
