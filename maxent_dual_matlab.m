@@ -3,7 +3,7 @@ clear;
 clc;
 count=1;
 data=load('train_1.txt');
-%w=data(:,1);
+% w=data(:,1);
 data=data(:,2:end);
 
 pair=zeros(size(data,2),2,size(data,1));
@@ -87,60 +87,34 @@ end
 %% optimization section 
 M=2;
 
-cvx_begin
-    variable lamda(no_features) nonnegative
-    variable w(no_dem) nonnegative
-    
-    c=0;
-    for d=1:no_dem
-        a=0;
-        b=0;
-        for i=1:no_features
-            sum2=0;
-            for x=1:no_states
-               sum3=0;
-               for y=1:no_actions
-                  sum3 = sum3 + epsat(x,y,d)* f(i,x,y);
-               end
-               sum2=sum2+sum3;
-            end
-            b=b+lamda(i)*sum2;
-        end
-        
-        for x=1:no_states
-            sum2=0;
-           for y=1:no_actions
-               sum3=0;
-              for i=1:no_features
-                sum3=sum3 +  lamda(i)* f(i,x,y);
-              end 
-              sum2 = sum2 + exp( sum3) ;
-           end
-           a=a+epst(x,d)* log(sum2);
-        end
-        
-        c=c+(b-a)*w(d);
-    end
-    c=c; %/sum(w);
- 
-    maximize( c )
-    
-    subject to
-    
-        for i=1:no_features
-           %lamda(i) <= 50;
-        end
-        
-        for d=1 : no_dem
-            w(d)<=0;
-            w(d)>=0;
-        end
-        
-cvx_end
+lamda = optimvar ('lamda',no_features);
+w = optimvar ('w',no_dem,'LowerBound', 0,'UpperBound',1);
 
-disp(lamda)
+fu = @(lamda,w) my_fun1(lamda,w,no_features,no_states,no_actions,no_dem,epsat,f,epst,M);
+   
+fun = fcn2optimexpr(fu,lamda,w);
+   
+prob = optimproblem('Objective',fun);
 
-disp(w)
+prob.Constraints.cons1= sum(w) >=M;
+   
+show(prob);
+   
+
+%%
+
+x0.lamda = double (zeros(no_features,1));
+x0.w = double (zeros(no_dem,1));
+
+[sol,fval] = solve(prob,x0);
+
+disp(fval);
+
+disp(sol.lamda);
+disp(sol.w);
+
+w=sol.w;
+lamda=sol.lamda;
 
 %% calculate the Model 
 
@@ -170,7 +144,7 @@ for x=1:no_states
     
 end
 
-    
+% disp (pos)
 
 %% calculate the feature expected for empirical distribution 
 eps=zeros(no_states,1);
@@ -249,4 +223,4 @@ disp (FE2);
 disp ("entropy = "+-s1);
 
 %% 
-evaluate(data,data,pas,no_actions);
+evaluate(data,data,pas,no_actions,pos);

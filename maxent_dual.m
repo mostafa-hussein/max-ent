@@ -135,7 +135,7 @@ cvx_begin
        sum1=sum1+pts(x)* log(sum2);
     end
    
-    maximize( s1-sum1 )
+    minimize( -s1+sum1 )
     subject to
         for i=1:no_features
            lamda(i) <= 50;

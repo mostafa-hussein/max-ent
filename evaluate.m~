@@ -1,6 +1,6 @@
 %% Data processing
 % clc;
-function []= evaluate(data1,data2,pas,no_actions,pos)
+function []= evaluate(data1,data2,pas,no_actions)
 
 count=1;
 data1=load('test.txt');
@@ -70,8 +70,6 @@ disp(c*100/size(pair,1));
 
 
 c1=0;
-
-% disp (pos);
 for i=1:size(pair,1)
     
     index=pair(i,1);

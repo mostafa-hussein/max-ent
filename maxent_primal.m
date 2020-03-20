@@ -36,8 +36,7 @@ for n=1:1 * size(data2,1)
 
         pair2(count,1)=bi2de(state)+1 ;
 
-        pair2(count,2)=action ;
-
+        pair2(count,2);
         count =count+1;
         state(1,action)=1; 
     end
