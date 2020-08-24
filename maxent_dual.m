@@ -139,7 +139,7 @@ cvx_begin
     subject to
         for i=1:no_features
            lamda(i) <= 50;
-           lamda(i) >= 0;
+           %lamda(i) >= 0;
         end
     
     
