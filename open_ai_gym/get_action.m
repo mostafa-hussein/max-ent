@@ -8,6 +8,6 @@ function action = get_action (lamda,f,no_actions,no_observation)
         end
         pas(i+1)=exp(s);
     end
-%     disp(pas)
+     disp(pas)
     [~,action]=max(pas);
 end

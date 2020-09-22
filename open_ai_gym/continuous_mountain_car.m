@@ -86,7 +86,7 @@ end
 %% 
 % matlab optimization 
 
-lamda = optimvar ('lamda',no_features,'LowerBound', 0);
+lamda = optimvar ('lamda',no_features);%,'LowerBound', 0);
 
 fu = @(lamda) opt_mountain_car(lamda,no_features,no_states,no_actions,ptsa,f,pts);
    

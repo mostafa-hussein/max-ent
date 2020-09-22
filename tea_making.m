@@ -9,7 +9,7 @@ no_observation = size(org_data,2)-1;
 norm_data=org_data(:,1:no_observation);
 norm_data(:,1:no_observation)=normalize(org_data(:,1:no_observation),'range');
 
-obs=norm_data(:,46:57);
+obs=[norm_data(:,1:45) norm_data(:,51:56)];
 
 train_data=[obs actions];
 
