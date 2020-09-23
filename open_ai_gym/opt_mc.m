@@ -1,5 +1,4 @@
 function fu = opt_mc(lamda,w,no_features,index,no_actions,no_dem,epsat,f,epst,M,show)
-    
     c=0;
     for d=1:no_dem
         a=0;

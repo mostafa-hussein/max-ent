@@ -20,9 +20,15 @@ no_observation = 3;
 no_actions=5;
 no_features=no_observation* no_actions; 
 
-M=1;
+M=2 ;
 no_dem=size(index,1);
 backup_data=data;
+
+% data=data(:,3:4);
+
+%data(:,1:no_observation)=normalize(data(:,1:no_observation),'range');
+
+
 
 %% Empirical model calculations
 % clc;
@@ -74,7 +80,7 @@ prob.Constraints.cons1= sum(w) == M;
 show(prob);
 
 x0.lamda = double (zeros(no_features,1));
-x0.w = double (zeros(no_dem,1));
+x0.w = double (ones(no_dem,1));
 
 options = optimoptions (@fmincon,'Algorithm','sqp','Display','final');
 
@@ -111,12 +117,12 @@ fu=opt_mc(lamda,w,no_features,index,no_actions,no_dem,ptsa,f,pts,M,0);
 
 
 
-% %% advanced optimization section  
+%% advanced optimization section  
+
+% lamda_old = double (rand(no_features,1));
+% w_old= double (rand(no_dem,1));
 % 
-% lamda_old = double (zeros(no_features,1));
-% w_old= double (zeros(no_dem,1));
-% 
-% for i=1:10
+% for i=1:2
 %     
 %     w = optimvar ('w',no_dem,'LowerBound', 0,'UpperBound',1);
 % 
@@ -133,12 +139,11 @@ fu=opt_mc(lamda,w,no_features,index,no_actions,no_dem,ptsa,f,pts,M,0);
 %     options = optimoptions (@fmincon,'Algorithm','sqp','Display','final');
 % 
 %     [sol,fval] = solve(prob,x0, 'Options', options);
-% 
-% 
+%     
 %     fprintf('weights = \n'); disp (sol.w)
 % 
 %     w_old=sol.w;
-%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %     
 %     lamda = optimvar ('lamda',no_features);
 % 
@@ -157,11 +162,9 @@ fu=opt_mc(lamda,w,no_features,index,no_actions,no_dem,ptsa,f,pts,M,0);
 %     fprintf('lamda  = \n'); disp (sol.lamda)
 %     lamda_old=sol.lamda;
 % end
-
-
-% %
 % 
-% % fu=opt_mc(lamda_old,w_old,no_features,index,no_actions,no_dem,ptsa,f,pts,M,0);
+% 
+% fu=opt_mc(lamda_old,w_old,no_features,index,no_actions,no_dem,ptsa,f,pts,M,0);
 % 
 % % 
 % clear result;
