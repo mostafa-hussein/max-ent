@@ -20,14 +20,14 @@ no_observation = size(data,2)-1;
 no_actions=5;
 no_features=no_observation* no_actions; 
 
-M=1;
+M=2;
 no_dem=size(index,1);
 backup_data=data;
 
 % data=data(:,3:4);
 % no_observation = size(data,2)-1;
 
-% data(:,1:no_observation)=normalize(data(:,1:no_observation),'range');
+data(:,1:no_observation)=normalize(data(:,1:no_observation),'range');
 
 
 
