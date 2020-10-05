@@ -15,20 +15,22 @@ for i=2:size(index)
 end
 
 no_observation = size(data,2)-1;
-% no_observation=1;
+
+
+no_observation=1;
+backup_data=data;
+clear data;
+data= [backup_data(:,3) , backup_data(:,end)];
+
+
+data(:,1:no_observation)=normalize(data(:,1:no_observation),'range');
+
 
 no_actions=5;
 no_features=no_observation* no_actions; 
 
-M=2;
+M=3;
 no_dem=size(index,1);
-backup_data=data;
-
-% data=data(:,3:4);
-% no_observation = size(data,2)-1;
-
-data(:,1:no_observation)=normalize(data(:,1:no_observation),'range');
-
 
 
 %% Empirical model calculations
@@ -162,11 +164,17 @@ lamda=sol.lamda;
 
 
 %% check 
+
+% lamda=lamda.*1000;
+
 clear result;
 
 test_data1=load('data/test_grid.txt');
 
-test_data=test_data1;
+test_data=test_data1(:,3);
+
+% test_data=test_data1;
+
 % test_data(:,1:no_observation)=normalize(test_data1(:,1:no_observation),'range');
 
 result=0;

@@ -14,13 +14,13 @@ for i = 1:row
                 textToDraw = '\rightarrow';
                 rotation = 0;
             case 2 % south
-                textToDraw = '\downarrow';
-                rotation = 0;
-            case 3 % west
                 textToDraw = '\leftarrow';
                 rotation = 0;
+            case 3 % west
+                textToDraw = '\uparrow';
+                rotation = 0;
             case 4 % north
-               textToDraw = '\uparrow';
+               textToDraw = '\downarrow';
                rotation = 0;
            case 5 % hold
                textToDraw = 'o';
@@ -29,11 +29,13 @@ for i = 1:row
               textToDraw = ' ';
                rotation = 0;
         end
+        k=(row+1)-j;
+        l=i;
 
         xsp = 1 / (col + 2);
         ysp = 1 / (row + 2);
-        xcor = ((2*j + 1) / 2) * xsp;
-        ycor = 1 - (((2*i + 1) / 2) * ysp);
+        xcor = ((2*l + 1) / 2) * xsp;
+        ycor = 1 - (((2*k + 1) / 2) * ysp);
         xcor = xcor - xsp/5;
         text(xcor, ycor, textToDraw, 'Rotation', rotation,'Color','red','FontSize',20)
     end

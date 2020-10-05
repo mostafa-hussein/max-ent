@@ -1,6 +1,7 @@
 %% Data processing
 clear;
 clc;
+% close all;
 count=1;
 data=load('data/grid_expert_data1.txt');
 index=load('grid_index1.txt');
@@ -15,20 +16,22 @@ for i=2:size(index)
 end
 
 no_observation = size(data,2)-1;
-% no_observation=1;
+
+
+% no_observation=3;
+% backup_data=data;
+% clear data;
+% data= [backup_data(:,1:2),backup_data(:,3) , backup_data(:,end)];
+
+
+data(:,1:no_observation)=normalize(data(:,1:no_observation),'range');
+
 
 no_actions=5;
 no_features=no_observation* no_actions; 
 
-M=1;
+M=2;
 no_dem=size(index,1);
-backup_data=data;
-
-% data=data(:,3:4);
-% no_observation = size(data,2)-1;
-
-% data(:,1:no_observation)=normalize(data(:,1:no_observation),'range');
-
 
 
 %% Empirical model calculations
@@ -148,26 +151,51 @@ lamda=sol.lamda;
 % 
 %     w_old=sol.w;
 %     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% lamda = double (zeros(no_features,1));
+% clear lamda;
+% lamda = double (rand(no_features,1));
 % fu = @(lamda) opt_mc(lamda,w_old,no_features,index,no_actions,no_dem,ptsa,f,pts,M,0);
 % opts = optimoptions(@fmincon,'Algorithm','sqp');
 % 
-% problem = createOptimProblem('fmincon','objective',fu,'x0',lamda_old,'options',opts);
+% problem = createOptimProblem('fmincon','objective',fu,'x0',lamda,'options',opts);
 % rng default % For reproducibility
 % ms = MultiStart('FunctionTolerance',2e-4,'UseParallel',true);
 % gs = GlobalSearch(ms);
 % [lamda,fg,flg,og] = run(gs,problem);
 % disp(lamda)
+%%
+% lamda = optimvar ('lamda',no_features);
+% 
+% fu = @(lamda) opt_mc(lamda,w,no_features,index,no_actions,no_dem,ptsa,f,pts,M,0);
+%    
+% fun = fcn2optimexpr(fu,lamda);
+%    
+% prob = optimproblem('Objective',fun);
+% 
+% x0.lamda=lamda_old;
+% 
+% % x0.lamda = double (ones(no_features,1));
+% 
+% options = optimoptions (@fmincon,'Algorithm','sqp','Display','final');
+% 
+% [sol,fval] = solve(prob,x0, 'Options', options);
+% 
+% disp(sol.lamda);
+% lamda=sol.lamda;
 
 
 %% check 
+
+lamda=lamda./1000;
+
 clear result;
 
-test_data1=load('data/test_grid.txt');
+test_data1=load('data/test_grid1.txt');
+
+% test_data=[test_data1(:,1:2),test_data1(:,3)];
 
 test_data=test_data1;
-% test_data(:,1:no_observation)=normalize(test_data1(:,1:no_observation),'range');
+
+test_data(:,1:no_observation)=normalize(test_data1(:,1:no_observation),'range');
 
 result=0;
 
@@ -182,6 +210,7 @@ end
 
 disp (w)
 disp (lamda)
-
+figure;
+draw_grid(act,5,5)
 
 
