@@ -48,7 +48,7 @@ ysp = 1 / (matrixRow + 2);
 xcor = ((2*y + 1) / 2) * xsp;
 ycor = 1 - (((2*x + 1) / 2) * ysp);
 xcor = xcor - xsp/5;
-text(xcor,ycor, 'Start','fontsize',10)
+% text(xcor,ycor, 'Start','fontsize',10)
 
 
 function setGoal(x,y, matrixRow,matrixCol)
@@ -57,5 +57,5 @@ ysp = 1 / (matrixRow + 2);
 xcor = ((2*y + 1) / 2) * xsp;
 ycor = 1 - (((2*x + 1) / 2) * ysp);
 xcor = xcor - xsp/5;
-text(xcor,ycor, 'Goal','fontsize',10)
+text(xcor,ycor, 'Goal','fontsize',30,'FontWeight','bold')
 

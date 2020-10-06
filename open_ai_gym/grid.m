@@ -30,7 +30,7 @@ data(:,1:no_observation)=normalize(data(:,1:no_observation),'range');
 no_actions=5;
 no_features=no_observation* no_actions; 
 
-M=2;
+M=1;
 no_dem=size(index,1);
 
 

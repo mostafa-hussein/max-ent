@@ -37,6 +37,7 @@ for i = 1:row
         xcor = ((2*l + 1) / 2) * xsp;
         ycor = 1 - (((2*k + 1) / 2) * ysp);
         xcor = xcor - xsp/5;
-        text(xcor, ycor, textToDraw, 'Rotation', rotation,'Color','red','FontSize',20)
+%         magenta
+        text(xcor, ycor, textToDraw, 'Rotation', rotation,'Color','red','FontSize',70,'FontWeight','bold')
     end
 end
